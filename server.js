@@ -1,32 +1,33 @@
 Monzo = {};
 
-OAuth.registerService('monzo', 2, null, function(query) {
-
+OAuth.registerService('monzo', '2', null, function(query) {
   var response = getAccessToken(query);
   var accessToken = response.access_token;
+  
   var expiresAt = (+new Date) + (1000 * response.expires_in);
-  var identity = getIdentity(accessToken);
 
   return {
     serviceData: {
-      id: identity.user_id,
+      id: response.user_id,
       accessToken: accessToken,
       expiresAt: expiresAt
     },
-    options: {profile: {name: identity.name}}
+     options: { profile: { name: response.user_id } }
   };
 });
 
 var getAccessToken = function (query) {
   var config = ServiceConfiguration.configurations.findOne({service: 'monzo'});
-  if (!config)
+  if (!config){
     throw new ServiceConfiguration.ConfigError();
-
-  var response;
+  }
+  if(config.loginStyle === undefined){
+    config.loginStyle = "redirect";
+  }
   try {
+console.log("getting token")  
   
-  
-    response = HTTP.post(
+    var response = HTTP.post(
       "https://api.monzo.com/oauth2/token", {headers: {Accept: 'application/json'}, params: {
         code: query.code,
         client_id: config.clientId,
@@ -46,19 +47,8 @@ var getAccessToken = function (query) {
   }
 };
 
-var getIdentity = function (accessToken) {
-  try {
-    var response = HTTP.get(
-      "https://api.monzo.com/ping/whoami",
-      {params: {access_token: accessToken}});
-    return response.data.results && response.data.results[0];
-  } catch (err) {
-    throw _.extend(new Error("Failed to fetch identity from Monzo. " + err.message),
-                   {response: err.response});
-  }
-};
-
 
 Monzo.retrieveCredential = function(credentialToken, credentialSecret) {
+  console.log("retriving credentials", credentialToken, credentialSecret)
   return OAuth.retrieveCredential(credentialToken, credentialSecret);
 };

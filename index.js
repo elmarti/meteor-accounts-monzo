@@ -2,12 +2,10 @@ Accounts.oauth.registerService('monzo');
 
 if (Meteor.isClient) {
   const loginWithMonzo = function(options, callback) {
-    // support a callback without options
     if (! callback && typeof options === "function") {
       callback = options;
       options = null;
     }
-
     var credentialRequestCompleteCallback = Accounts.oauth.credentialRequestCompleteHandler(callback);
     Monzo.requestCredential(options, credentialRequestCompleteCallback);
   };
@@ -18,6 +16,6 @@ if (Meteor.isClient) {
 } else {
   Accounts.addAutopublishFields({
     forLoggedInUser: ['services.monzo'],
-    forOtherUsers: ['services.monzo.client_id']
+    forOtherUsers: ['services.monzo.id']
   });
 }
