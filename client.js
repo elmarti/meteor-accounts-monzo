@@ -30,8 +30,7 @@ Monzo.requestCredential = function(options, credentialRequestCompleteCallback) {
     '&response_type=code' +
     '&state=' + OAuth._stateParam('redirect', credentialToken, options && options.redirectUrl) +
     '&redirect_uri=' + redirectUrl;
-  console.log("dave", config, redirectUrl);
-  debugger;
+  
   OAuth.launchLogin({
     loginService: "monzo",
     loginStyle: 'redirect',

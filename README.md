@@ -20,22 +20,10 @@ Meteor.startup(() => {
 
 ```
 Now you can call
-```JavaScript
-Meteor.loginWithMonzo(function(error){
-    if(error){
-        
-    }
-});
-
-``` 
-OR
 
 ```JavaScript
-Meteor.loginWithMonzo(options, function(error){
-    if(error){
-        
-    }
-})
+//See documentation for the options interface http://docs.meteor.com/api/accounts.html#Meteor-loginWith<ExternalService>
+Meteor.loginWithMonzo(options)
 
 ```
 

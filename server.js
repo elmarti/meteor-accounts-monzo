@@ -8,7 +8,6 @@ OAuth.registerService('monzo', '2', null, function(query) {
 
   return {
     serviceData: {
-      id: response.user_id,
       accessToken: accessToken,
       expiresAt: expiresAt
     },
@@ -25,7 +24,6 @@ var getAccessToken = function (query) {
     config.loginStyle = "redirect";
   }
   try {
-console.log("getting token")  
   
     var response = HTTP.post(
       "https://api.monzo.com/oauth2/token", {headers: {Accept: 'application/json'}, params: {
@@ -49,6 +47,5 @@ console.log("getting token")
 
 
 Monzo.retrieveCredential = function(credentialToken, credentialSecret) {
-  console.log("retriving credentials", credentialToken, credentialSecret)
   return OAuth.retrieveCredential(credentialToken, credentialSecret);
 };

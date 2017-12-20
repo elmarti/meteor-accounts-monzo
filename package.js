@@ -15,6 +15,7 @@ Package.onUse(function(api) {
 
     api.use('http');
     api.use('accounts-oauth', ['client', 'server']);
+    api.imply('accounts-oauth', ['client', 'server']);
     api.use('oauth2', ['client', 'server']);
     api.use('oauth', ['client', 'server']);
     api.use('service-configuration', ['server', 'client']);
