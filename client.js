@@ -1,10 +1,7 @@
 Monzo = {};
 
-// Request Github credentials for the user
+// Request Monzo credentials for the user
 // @param options {optional}
-// @param credentialRequestCompleteCallback {Function} Callback function to call on
-//   completion. Takes one argument, credentialToken on success, or Error on
-//   error.
 Monzo.requestCredential = function(options, credentialRequestCompleteCallback) {
   // support both (options, callback) and (callback).
   if (!credentialRequestCompleteCallback && typeof options === 'function') {
@@ -12,25 +9,17 @@ Monzo.requestCredential = function(options, credentialRequestCompleteCallback) {
     options = {};
   }
 
-  var config = ServiceConfiguration.configurations.findOne({ service: 'monzo' });
+  const config = ServiceConfiguration.configurations.findOne({ service: 'monzo' });
 
-  if (!config) {
-    credentialRequestCompleteCallback && credentialRequestCompleteCallback(
-      new ServiceConfiguration.ConfigError());
-    return;
-  }
-  if (config.loginStyle === undefined) {
-    config.loginStyle = "redirect";
-
-  }
-  var credentialToken = Random.secret();
+  config.loginStyle = "redirect";
+  const credentialToken = Random.secret();
   const redirectUrl = OAuth._redirectUri('monzo', config);
-  var loginUrl =
+  const loginUrl =
     'https://auth.getmondo.co.uk?client_id=' + config.clientId +
     '&response_type=code' +
     '&state=' + OAuth._stateParam('redirect', credentialToken, options && options.redirectUrl) +
     '&redirect_uri=' + redirectUrl;
-  
+
   OAuth.launchLogin({
     loginService: "monzo",
     loginStyle: 'redirect',

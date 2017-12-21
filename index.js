@@ -2,7 +2,8 @@ Accounts.oauth.registerService('monzo');
 
 if (Meteor.isClient) {
   const loginWithMonzo = function(options, callback) {
-    if (! callback && typeof options === "function") {
+    // support a callback without options
+    if (!callback && typeof options === "function") {
       callback = options;
       options = null;
     }
@@ -10,10 +11,11 @@ if (Meteor.isClient) {
     Monzo.requestCredential(options, credentialRequestCompleteCallback);
   };
   Accounts.registerClientLoginFunction('monzo', loginWithMonzo);
-  Meteor.loginWithMonzo = function () {
+  Meteor.loginWithMonzo = function() {
     return Accounts.applyLoginFunction('monzo', arguments);
   };
-} else {
+}
+else {
   Accounts.addAutopublishFields({
     forLoggedInUser: ['services.monzo'],
     forOtherUsers: ['services.monzo.id']
