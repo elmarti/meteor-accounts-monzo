@@ -1,4 +1,5 @@
-# Accounts Monzo
+# Meteor Monzo Accounts 
+`elmarti:accounts-monzo`
 This package allows you to SSO (Single Sign on) into Monzo using OAuth2.
 
 
